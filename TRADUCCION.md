@@ -86,7 +86,33 @@ Se respeta el negocio del spec (historias, criterios, reglas, contrato y modelo 
 
 
 
-\## Pendiente
+## Evidencia por tarea (tasks.md)
+
+| Tarea | Evidencia |
+|---|---|
+| T-01 | `GET /api/v1/health` responde `{"status":"ok"}` |
+| T-02 | Migración `create_library_tables`: seis tablas, sin DEFAULT, cinco categorías con UUID fijos |
+| T-09, T-10, T-11, T-16 | `php artisan test`: 10 pruebas en verde en `tests/Feature/LoanRulesTest.php`, cada una nombrada por su criterio (CA-01.3, CA-03.2, CA-06.2 a CA-06.5, CA-07.2, CA-10.4) |
+| T-17 | `php artisan app:ensure-admin` crea el admin desde el entorno; con la base vacía se puede iniciar sesión |
+| T-18 | Migración `add_domain_checks_t18`: un INSERT por `psql` con `total_copies = 0` falla con `ck_book_total_positive`; `data-model.md` §4 actualizado |
+| T-21 | `php seed.php` en `-tool` crea 40 libros, 10 socios y 15 préstamos por la API; el reporte devuelve filas |
+| T-22 | Parcial: login y catálogo paginado en React |
+| T-23 | `index.html` estático en `-page` |
+
+Las pruebas usan una base aparte (`library_test`) para no tocar los datos de demostración. Se crea con:
+
+    docker exec library-db psql -U library -d library -c "CREATE DATABASE library_test;"
+    docker exec library-db psql -U library -d library_test -c "CREATE SCHEMA IF NOT EXISTS library;"
+
+Las pruebas encontraron un defecto real (la clase `BusinessException` no estaba en el repositorio) y se corrigió: así se usa la evidencia del artículo XII.
+
+## Pendiente
+
+- T-15 Portada (`/books/{id}/cover`).
+- T-19 Pruebas de arquitectura: el contrato de `import-linter` es propio de Python; en Laravel el equivalente sería Pest Arch, no implementado.
+- T-20 La API y el frontend aún no corren dentro de Docker; solo el motor.
+- T-21 Los 3 préstamos vencidos no se pueden crear por la API sin un reloj inyectable (ver README de `-tool`).
+- T-22 Pantallas de socios, préstamos, devolución, vencidos y reporte.
 
 
 
